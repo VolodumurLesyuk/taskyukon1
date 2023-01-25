@@ -4,12 +4,14 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+import sqlite3
+
 
 class GetCash:
     def __init__(self):
         self.url = "https://minfin.com.ua/ua/currency/"
-        # self.connection = sqlite3.connect('C:\\Users\\Vova\\Desktop\\taskyukon\\db.sqlite3')
-        # self.cursor = self.connection.cursor()
+        self.connection = sqlite3.connect('C:\\Users\\Vova\\Desktop\\taskyukon\\db.sqlite3')
+        self.cursor = self.connection.cursor()
 
     def get_data(self) -> Tuple[List[Any], List[Any]]:
         '''
@@ -40,18 +42,24 @@ class GetCash:
         json_data["UAH"] = '1'
         return json_data
 
-    def convert_data_to_json(self, dictionary_data: Dict) -> json:
+    def update_data(self, dictionary_data: Dict):
         """
-        Convert dict to json
+        Update(insert) database
         :param dictionary_data:
-        :return json:
         """
-        converted_data = json.dumps(dictionary_data)
-        return converted_data
+        count = 1
+        # for key, value in json_data.items(): # add data to table first time
+        #     self.connection.execute('insert into cash_currency values(?,?,?)', [count, key, value])
+        #     self.connection.commit()
+        #     count += 1
+        for key, value in dictionary_data.items():
+            self.connection.execute('update cash_currency set type = ?, rate = ? where id = ?', (key, value, count))
+            self.connection.commit()
+            count += 1
 
 
 a = GetCash()
 two_lists = a.get_data()
 dict_conv = a.convert_data_to_dict(two_lists)
-json_conv = a.convert_data_to_json(dict_conv)
+json_conv = a.update_data(dict_conv)
 print(json_conv)
