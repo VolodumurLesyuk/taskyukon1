@@ -57,6 +57,8 @@ class GetCash:
             self.connection.commit()
             count += 1
 
+        self.connection.close()
+
 
 a = GetCash()
 two_lists = a.get_data()
