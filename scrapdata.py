@@ -59,9 +59,3 @@ class GetCash:
 
         self.connection.close()
 
-
-a = GetCash()
-two_lists = a.get_data()
-dict_conv = a.convert_data_to_dict(two_lists)
-json_conv = a.update_data(dict_conv)
-print(json_conv)

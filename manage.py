@@ -3,6 +3,7 @@
 import os
 import sys
 
+from scrapdata import GetCash
 
 
 def main():
@@ -19,5 +20,15 @@ def main():
     execute_from_command_line(sys.argv)
 
 
+def update_database():
+    obj = GetCash()
+    two_lists = obj.get_data()
+    dict_conv = obj.convert_data_to_dict(two_lists)
+    obj.update_data(dict_conv)
+
+
 if __name__ == '__main__':
+    # print("Updating database!")
+    # update_database()
+    # print("Database has chenged")
     main()
