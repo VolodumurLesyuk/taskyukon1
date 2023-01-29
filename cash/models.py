@@ -46,7 +46,5 @@ def post_query_save(sender, instance, created, *args, **kwargs):
                               value=((currency_from.rate * instance.value) / currency_to.rate).__round__(2),
                               conversation_rate=(currency_from.rate / currency_to.rate).__round__(2))
 
-    return redirect("answer/", args=())
-
 
 post_save.connect(post_query_save, sender=Query)
